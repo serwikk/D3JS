@@ -1,0 +1,45 @@
+/* Estilos CSS aquí */
+body {
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+}
+
+#chart {
+    width: 600px;
+    height: 400px;
+    margin: 0 auto;
+}
+
+#line-chart {
+    width: 600px;
+    height: 200px;
+    margin: 20px auto;
+}
+
+.bar {
+    fill: steelblue;
+}
+
+.bar:hover {
+    fill: orange;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-size: 12px;
+}
+
+.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 2px;
+}
