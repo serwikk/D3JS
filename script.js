@@ -32,21 +32,26 @@ d3.json('all_billionaires_1997_2023.json').then(function(data) {
     // Escala para el eje y (ahora será la escala horizontal)
     var xScale = d3.scaleLinear()
                     .domain([0, d3.max(filteredData, function(d) { return d.net_worth; })])
-                    .range([0, barChartWidth]);
+        .range([0, barChartWidth]);
+    
 
     // Agregar las barras al gráfico de barras con evento de clic
     svg.selectAll(".bar")
-        .data(filteredData)
-        .enter().append("rect")
-        .attr("class", "bar")
-        .attr("y", function(d) { return yScale(d.full_name); })
-        .attr("height", yScale.bandwidth())
-        .attr("x", 0) // La posición x comienza en 0
-        .attr("width", function(d) { return xScale(d.net_worth); }) // El ancho depende del net worth
-        .style("cursor", "pointer") // Cambia el cursor al pasar sobre las barras
-        .on("click", function(event,d) {
-            updateLineChart(d.full_name)
-        });
+    .data(filteredData)
+    .enter().append("rect")
+    .attr("class", "bar")
+    .attr("y", function(d) { return yScale(d.full_name); })
+    .attr("height", yScale.bandwidth())
+    .attr("x", 0) // La posición x comienza en 0
+    .attr("width", function(d) { return xScale(d.net_worth); }) // El ancho depende del net worth
+    .style("cursor", "pointer") // Cambia el cursor al pasar sobre las barras
+    .on("click", function(event,d) {
+        // Cambia la clase de todas las barras a la clase original
+        svg.selectAll(".bar").classed("selected", false);
+        // Cambia la clase de la barra seleccionada a la clase de selección
+        d3.select(this).classed("selected", true);
+        updateLineChart(d.full_name);
+    });
 
     
     // Agregar el eje y al gráfico de barras
@@ -80,7 +85,7 @@ d3.json('all_billionaires_1997_2023.json').then(function(data) {
         .attr("text-anchor", "middle")
         .style("font-size", "20px")
         // .style("margin-top", "20px")
-        .text("Net Worth de los billonarios en 2023");
+        .text("Net Worth de los billonarios en 2023 (billones de dólares)");
 
 
 
@@ -94,7 +99,7 @@ d3.json('all_billionaires_1997_2023.json').then(function(data) {
 
         // Configurar dimensiones del gráfico de líneas
         var lineChartWidth = 600;
-        var lineChartHeight = 200;
+        var lineChartHeight = 400;
         var lineChartMargin = { top: 30, right: 20, bottom: 30, left: 70 };
 
         // Crear escala para el eje x
@@ -159,7 +164,7 @@ d3.json('all_billionaires_1997_2023.json').then(function(data) {
                 .attr("y", 0 - (lineChartMargin.top / 2))
                 .attr("text-anchor", "middle")
                 .style("font-size", "20px")
-                .text("Evolución del Net Worth");
+                .text("Evolución del Net Worth: " + fullName + " (billones de dólares)");
     }
 }).catch(function(error) {
     // Manejar el error si ocurre algún problema al cargar el archivo
