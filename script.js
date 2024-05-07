@@ -13,7 +13,7 @@ d3.json('all_billionaires_1997_2023.json').then(function(data) {
     // Configurar las dimensiones del gráfico de barras
     var barChartWidth = 600;
     var barChartHeight = 400;
-    var margin = { top: 20, right: 20, bottom: 30, left: 40 };
+    var margin = { top: 30, right: 0, bottom: 30, left: 125 };
 
     // Crear el contenedor SVG para el gráfico de barras
     var svg = d3.select("#chart")
@@ -59,13 +59,13 @@ d3.json('all_billionaires_1997_2023.json').then(function(data) {
         .call(d3.axisBottom(xScale));
 
     // Agregar título al eje y
-    svg.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 0 - margin.left)
-        .attr("x", 0 - (barChartHeight / 2))
-        .attr("dy", "1em")
-        .style("text-anchor", "middle")
-        .text("Nombre");
+    // svg.append("text")
+    //     .attr("transform", "rotate(-90)")
+    //     .attr("y", 0 - margin.left)
+    //     .attr("x", 0 - (barChartHeight / 2))
+    //     .attr("dy", "1em")
+    //     .style("text-anchor", "middle")
+    //     .text("Nombre");
 
     // Agregar título al eje x
     svg.append("text")
@@ -78,9 +78,13 @@ d3.json('all_billionaires_1997_2023.json').then(function(data) {
         .attr("x", (barChartWidth / 2))
         .attr("y", 0 - (margin.top / 2))
         .attr("text-anchor", "middle")
-        .style("font-size", "16px")
+        .style("font-size", "20px")
+        // .style("margin-top", "20px")
         .text("Net Worth de los billonarios en 2023");
 
+
+
+        
     // Actualizar el gráfico de líneas con la evolución del net worth para una persona seleccionada
     function updateLineChart(fullName) {
         // Filtrar los datos para la persona seleccionada
@@ -91,7 +95,7 @@ d3.json('all_billionaires_1997_2023.json').then(function(data) {
         // Configurar dimensiones del gráfico de líneas
         var lineChartWidth = 600;
         var lineChartHeight = 200;
-        var lineChartMargin = { top: 20, right: 20, bottom: 30, left: 40 };
+        var lineChartMargin = { top: 30, right: 20, bottom: 30, left: 70 };
 
         // Crear escala para el eje x
         var lineXScale = d3.scaleLinear()
@@ -141,20 +145,20 @@ d3.json('all_billionaires_1997_2023.json').then(function(data) {
                 .text("Año");
 
         // Agregar título al eje y del gráfico de líneas
-        lineSvg.append("text")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 0 - lineChartMargin.left)
-                .attr("x", 0 - (lineChartHeight / 2))
-                .attr("dy", "1em")
-                .style("text-anchor", "middle")
-                .text("Net Worth");
+        // lineSvg.append("text")
+        //         .attr("transform", "rotate(-90)")
+        //         .attr("y", 0 - lineChartMargin.left)
+        //         .attr("x", 0 - (lineChartHeight / 2))
+        //         .attr("dy", "1em")
+        //         .style("text-anchor", "middle")
+        //         .text("Net Worth");
 
         // Agregar título al gráfico de líneas
         lineSvg.append("text")
                 .attr("x", (lineChartWidth / 2))
                 .attr("y", 0 - (lineChartMargin.top / 2))
                 .attr("text-anchor", "middle")
-                .style("font-size", "16px")
+                .style("font-size", "20px")
                 .text("Evolución del Net Worth");
     }
 }).catch(function(error) {

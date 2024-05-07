@@ -11,6 +11,9 @@ h1 {
     width: 600px;
     height: 400px;
     margin: 0 auto;
+    margin-bottom: 200px;
+    padding-top: 70px;
+    /* display: inline-block; */
 }
 
 #line-chart {
@@ -35,7 +38,11 @@ h1 {
 }
 
 .axis text {
-    font-size: 12px;
+    font-size: 10px; /* Reducir el tamaño de la fuente para los ejes */
+}
+
+.axis-title {
+    font-size: 14px; /* Ajustar el tamaño de la fuente de los títulos de los ejes */
 }
 
 .line {
