@@ -58,3 +58,22 @@ table {
 td {
     padding: auto;
 }
+
+#instrucciones {
+    text-align: center;
+    font-size: 30px;
+    margin-top: 25px;
+}
+
+button {
+    margin-left: 30px;
+    background-color: #b2dafa;
+    font-size: 20px;
+    border-radius: 8px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #7aaeda;
+}

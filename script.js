@@ -34,6 +34,11 @@ d3.json('all_billionaires_1997_2023.json').then(function(data) {
                     .domain([0, d3.max(filteredData, function(d) { return d.net_worth; })])
         .range([0, barChartWidth]);
     
+    
+    /*PRUEBA DE CHART CON EL TOTAL */
+
+    sumaPorAnyos(data)
+    
 
     // Agregar las barras al gráfico de barras con evento de clic
     svg.selectAll(".bar")
@@ -52,6 +57,7 @@ d3.json('all_billionaires_1997_2023.json').then(function(data) {
         d3.select(this).classed("selected", true);
         updateLineChart(d.full_name);
     });
+
 
     
     // Agregar el eje y al gráfico de barras
@@ -170,3 +176,89 @@ d3.json('all_billionaires_1997_2023.json').then(function(data) {
     // Manejar el error si ocurre algún problema al cargar el archivo
     console.error('Error al cargar el archivo JSON:', error);
 });
+
+function sumaPorAnyos(data) {
+
+    data_agrupada = data.reduce(function(acc, cur) {
+        if (acc[cur.year]) {
+            acc[cur.year] += cur.net_worth;
+        } else {
+            acc[cur.year] = cur.net_worth;
+        }
+        return acc;
+    }, {});
+
+    // Convertir el objeto agrupado en un array de objetos con propiedades year y net_worth
+    var lineChartData = Object.keys(data_agrupada).map(function(year) {
+        return { year: parseInt(year), net_worth: data_agrupada[year] };
+    });
+
+    console.log(lineChartData)
+
+    // Configurar dimensiones del gráfico de líneas
+    var lineChartWidth = 600;
+    var lineChartHeight = 400;
+    var lineChartMargin = { top: 30, right: 20, bottom: 30, left: 70 };
+
+    // Crear escala para el eje x
+    var lineXScale = d3.scaleLinear()
+                        .domain(d3.extent(lineChartData, function(d) { return d.year; }))
+                        .range([0, lineChartWidth]);
+
+    // Crear escala para el eje y
+    var lineYScale = d3.scaleLinear()
+                        .domain([0, d3.max(lineChartData, function(d) { return d.net_worth; })])
+                        .range([lineChartHeight, 0]);
+
+    // Crear la línea
+    var line = d3.line()
+                .x(function(d) { return lineXScale(d.year); })
+                .y(function(d) { return lineYScale(d.net_worth); });
+
+    // Eliminar el gráfico de líneas anterior
+    d3.select("#line-chart").select("svg").remove();
+
+    // Crear el contenedor SVG para el nuevo gráfico de líneas
+    var lineSvg = d3.select("#line-chart")
+                    .append("svg")
+                    .attr("width", lineChartWidth + lineChartMargin.left + lineChartMargin.right)
+                    .attr("height", lineChartHeight + lineChartMargin.top + lineChartMargin.bottom)
+                    .append("g")
+                    .attr("transform", "translate(" + lineChartMargin.left + "," + lineChartMargin.top + ")");
+
+    // Agregar la línea al gráfico de líneas
+    lineSvg.append("path")
+            .datum(lineChartData)
+            .attr("class", "line")
+            .attr("d", line);
+
+    // Agregar el eje x al gráfico de líneas
+    lineSvg.append("g")
+            .attr("transform", "translate(0," + lineChartHeight + ")")
+            .call(d3.axisBottom(lineXScale));
+
+    // Agregar el eje y al gráfico de líneas
+    lineSvg.append("g")
+            .call(d3.axisLeft(lineYScale));
+
+    // Agregar título al eje x del gráfico de líneas
+    lineSvg.append("text")
+            .attr("transform", "translate(" + (lineChartWidth / 2) + " ," + (lineChartHeight + lineChartMargin.top + 20) + ")")
+            .style("text-anchor", "middle")
+            .text("Año");
+
+    // Agregar título al gráfico de líneas
+    lineSvg.append("text")
+            .attr("x", (lineChartWidth / 2))
+            .attr("y", 0 - (lineChartMargin.top / 2))
+            .attr("text-anchor", "middle")
+            .style("font-size", "20px")
+            .text("Suma de Net Worth por Año: Total (billones de dólares)");
+
+}
+
+function reset() {
+    location.reload();
+}
+
+
